@@ -1,0 +1,96 @@
+.page-title{
+	font-size: 20px;
+    line-height: 48px;
+    font-weight: bold;
+    color: #fff;
+    margin:0px 5px;
+    float: left;
+}
+.main-footer{
+	display: none;
+}
+.wrapper {
+    position: inherit;
+}
+html, body{
+	background-color: #ECF0F5;
+}
+/*navbar*/
+#mnav .nav>li>a{
+
+}
+
+/*newQuote page*/
+#newQuote .row{
+	margin-bottom: 10px;
+}
+#newQuote .mbtn, #newProduct .mbtn{
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+/*newCustomer page*/
+#newCustomer label, #newProduct label{
+    margin-top: 10px;
+}
+#newCustomer .box-body .box-title{
+    margin-top: 10px;
+}
+#contactRow{
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+.left-section{
+    border-right: 1px solid #f4f4f4;
+}
+/*newProduct page*/
+#addVendorBox{
+    padding-bottom: 10px;
+}
+.form-control.danger {
+    border-color: #dd4b39;
+    color: #dd4b39;
+    box-shadow: none;
+}
+.error-msg{
+    color: #dd4b39;
+}
+.alert.m-alert-success {
+    background-color: #fff;
+    color: green;
+    border-top: 3px solid green;
+}
+.alert.m-alert-success h4{
+    margin-bottom: 0;
+}
+.alert.m-alert-success a{
+    color: gray;
+    text-decoration: none;
+    margin-left: 28px;
+}
+.selectm .select2-container .select2-selection--single{
+    height: 34px;
+}
+.selectm .select2-container--default .select2-selection--single{
+    border-radius: 0;
+}
+.selectm .select2-container--default .select2-selection--single .vdanger{
+    border-color: red;
+}
+.red-fa{
+    padding: 0 4px;
+    color: #dd4b39;
+}
+.green-fa{
+    padding: 0 4px;
+    color: green;
+}
+.small-btn{
+    padding: 0px 4px;
+}
+#vendors_table tr.selected {
+    background-color: floralwhite;
+}
+#vendors_table tr td:first-child,#vendors_table tr th:first-child { 
+   display:none; 
+}
