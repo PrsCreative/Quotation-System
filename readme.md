@@ -9,9 +9,9 @@ Tools: jQuery, DataTables js & Select2 js.
 - Edit Products.
 - Add Product stocks to inventory.
 - Delete Product stocks.
+- Add Quotation.
 
 ## To be implemented:
-- Add Quotation.
 - Edit Quotation.
 - Delete Quotation.
 - Settings.
