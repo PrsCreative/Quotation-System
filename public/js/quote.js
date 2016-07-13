@@ -1,15 +1,22 @@
 console.log('hello from quote.js');
+var quoteId = $('#quote_id').val(); //to store quotation id and determine if quote is created or no.
+$("#customer, #item_name").select2();//apply select2
 
-
+disableAddItem(true);//disable add item form
+$('#customerm .select2-selection__rendered').html('Pick a Customer');
+if(quoteId != '')
+{
+    startAddFunction();
+    addItemFunction();
+    $('#customerm .select2-selection__rendered').html(customer_name+'');
+}
 /*** Variables ***/
 var count = 0; //table row counter
 var items_table = document.getElementById("items_table");//items_table selector.
 var items_table_tbody = document.getElementById("items_table").getElementsByTagName('tbody')[0];//items table body.
 var selectedRow = ''; //store the selected row
-var quoteId = 0; //to store quotation id and determine if quote is created or no.
-$('#items_table').DataTable( {
-        "ajax": host + '/search/quotations/' + quoteId
- } );
+
+$('#items_table').DataTable();
 
 //setup token in header
 $.ajaxSetup({
@@ -17,10 +24,6 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
-
-$("#customer, #item_name").select2();//apply select2
-disableAddItem(true);//disable add item form
 
 //when customer is selected
 $('#customer').change(function(){
@@ -42,6 +45,7 @@ $('#item_name').change(function(){
 
 //when click on start adding button
 $('#startAdd').on( 'click', function () {
+    quoteId = $('#quote_id').val();
     //check if quote is created 
     if(quoteId > 0){//check for bad people!
         alert('Why? Just Go do something usefull with your life!');
@@ -58,13 +62,17 @@ $('#startAdd').on( 'click', function () {
                 $('#quote_id').val(msg);
                 if(msg > 0)
                 {
-                    disableAddItem(false);//enable add item form
-                    disableCustomer(true);//disable customer form
+                    startAddFunction();
                 } 
             });
         }//end if validateQuote()  
     }//end else
 });
+
+function startAddFunction(){
+    disableAddItem(false);//enable add item form
+    disableCustomer(true);//disable customer form
+}
 
 //when click on addItem button
 $('#addItem').on( 'click', function () {
@@ -83,20 +91,7 @@ $('#addItem').on( 'click', function () {
                 
                 if(msg > 0)
                 {
-                    var url = host + '/search/quotations/' + quoteId;
-                    $.getJSON(url, function( data ) {
-                        $('#total').html(data['subtotal'] + ' AED');
-                        $('#subtotal').html(data['subtotal'] + ' AED');
-                        //$('#items_table').DataTable().ajax.url(data).load();//reload items
-                        var thedata = $('#items_table').DataTable().ajax.json();//get current datatable data
-                        thedata = data;//replace with current data
-                        $('#items_table').DataTable().clear();//clear the table
-                        $('#items_table').DataTable().rows.add(data.data);//add the new data
-                        $('#items_table').DataTable().draw();//redraw the table
-
-                    });
-                    emptyAddItems();
-                    
+                    addItemFunction();                    
                 } 
             });
         }
@@ -107,6 +102,22 @@ $('#addItem').on( 'click', function () {
         alert('Why? Just Go do something usefull with your life!');
     }
 });
+
+function addItemFunction(){
+    var url = host + '/search/quotations/' + quoteId;
+    $.getJSON(url, function( data ) {
+        $('#total').html(data['subtotal'] + ' AED');
+        $('#subtotal').html(data['subtotal'] + ' AED');
+        //$('#items_table').DataTable().ajax.url(data).load();//reload items
+        var thedata = $('#items_table').DataTable().ajax.json();//get current datatable data
+        thedata = data;//replace with current data
+        $('#items_table').DataTable().clear();//clear the table
+        $('#items_table').DataTable().rows.add(data.data);//add the new data
+        $('#items_table').DataTable().draw();//redraw the table
+
+    });
+    emptyAddItems();
+}
 
 //quote validation
 function validateQuote(){
@@ -229,7 +240,7 @@ function fillItemsTable(data){
 
 //disable add item form
 function disableAddItem(value){
-    $("#addItem, #item_qty, #item_description, #item_name").prop('disabled', value);
+    $("#addItem, #item_qty, #item_description, #item_name, #item_price").prop('disabled', value);
     if(value == false){
         $('#startAdd').hide();
         $('#addItem').show();

@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+{{$customer_name = ''}}
 <div id="newQuote" class="content-container">
 <div class="row">
     <div class="col-md-6">
@@ -17,27 +18,29 @@
 	        {!! Form::open(['url'=>'quotation/new', 'id'=>'quoteForm']) !!}
 	        <div class="row{{ $errors->has('customer') ? ' has-error' : '' }}">
 	        	<div id="customerm" class="col-md-12 selectm">
-							<input type="hidden" id="customer_id" name="customer_id" value="" />
+							<input type="hidden" id="customer_id" name="customer_id" value="{{$quote->customer_id}}" />
 	        		{{ Form::label('customer','Customer name') }}
 							<select id="customer" class="form-control">
-									<option selected="selected">Pick a Customer</option>
-									@foreach($customers as $customer)
-										<option value="{{$customer->id}}">{{$customer->customer_name}}</option>
-									@endforeach
+									<option selected="{{$quote->customer_id? '':'selected'}}">Pick a Customer</option>
+									<?php
+										foreach($customers as $customer){
+												 $selected = '';
+												if($quote->customer_id == $customer->id){
+														$selected = 'selected';
+														$customer_name = $customer->customer_name;
+												} 
+									?>
+										<option value="{{$customer->id}}"  selected="{{$selected}}">{{$customer->customer_name}}</option>
+									<?php
+									}//end foreach
+									?>
 							</select>
-    			</div>
-    			<div class="col-md-12">
-    				@if ($errors->has('customer'))
-		                <span class="help-block col-md-12 error-msg">
-		                    <strong>{{ $errors->first('customer') }}</strong>
-		                </span>
-		            @endif
     			</div>
 	        </div>
 	        <div class="row">
 	        	<div class="col-md-6">
 	        		{{ Form::label('expiry_date', 'Expiry Date') }}
-	        		{{ Form::date('expiry_date','',['class' => 'form-control']) }}
+	        		{{ Form::date('expiry_date',$quote->expiry_date,['class' => 'form-control']) }}
 	        	</div>	        	
 	        	<div class="col-md-6">
 	        		{{ Form::label('payment_term', 'Payment Term') }}
@@ -45,7 +48,7 @@
 	        			$payment_terms = [''=>'Pick a term', '15 Days'=>'15 Days','30 Days Net'=>'30 Days Net',
 	        							  'Immediate Payment'=>'Immediate Payment']; 
 	        		?>
-	        		{{ Form::select('payment_term',$payment_terms,null,['class' => 'form-control']) }}
+	        		{{ Form::select('payment_term',$payment_terms,$quote->payment_term,['class' => 'form-control']) }}
 	        	</div>	
 	        </div>
 	        {!! Form::close() !!}
@@ -73,7 +76,7 @@
 	        
 	        <div class="row">
 	        	<div class="col-md-6 selectm">
-							<input type="hidden" id="quote_id" name="quote_id" value="" />
+							<input type="hidden" id="quote_id" name="quote_id" value="{{$quote->id}}" />
 							<input type="hidden" id="product_id" name="product_id" value="" />
 	        		{{ Form::label('item_name','Product name') }}
 	        		<select id="item_name" class="form-control">
@@ -177,7 +180,7 @@
 	              </tr>-->
 	              <tr>
 	                <th>Total:</th>
-	                <td><span id="total"></span></td>
+	                <td><span id="total">0.00 AED</span></td>
 	              </tr>
 	            </tbody></table>
 	          </div><!-- end of div table -->
@@ -198,6 +201,7 @@
 var searchProductUrl = "{{URL::to('/search/products/')}}/";
 var searchInventoryUrl = "{{URL::to('/search/inventory/')}}/";
 var host = "{{URL::to('/')}}";
+var customer_name = "{{$customer_name}}";
 </script>
 <!-- quotation js functions -->
 <script type="text/javascript" src="{{URL::to('/')}}/js/quote.js"></script>
