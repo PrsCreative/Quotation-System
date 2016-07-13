@@ -74,9 +74,6 @@ html, body{
 .selectm .select2-container--default .select2-selection--single{
     border-radius: 0;
 }
-.selectm .select2-container--default .select2-selection--single .vdanger{
-    border-color: red;
-}
 .red-fa{
     padding: 0 4px;
     color: #dd4b39;

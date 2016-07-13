@@ -7,13 +7,24 @@
     <div class="box box-success">
 	    <div class="box-header with-border">
 	        <h3 class="box-title">Customer Details</h3>
+					<div class="box-tools">
+						<button id="editCustomerBtn" style="display:none;" class="btn btn-success mbtn" type="button">
+							Edit	        		
+	        	</button>
+          </div>
 	    </div>
 	    <div class="box-body">
-	        {!! Form::open(['url'=>'quotation/new']) !!}
+	        {!! Form::open(['url'=>'quotation/new', 'id'=>'quoteForm']) !!}
 	        <div class="row{{ $errors->has('customer') ? ' has-error' : '' }}">
-	        	<div class="col-md-12">
+	        	<div id="customerm" class="col-md-12 selectm">
+							<input type="hidden" id="customer_id" name="customer_id" value="" />
 	        		{{ Form::label('customer','Customer name') }}
-	        		{{ Form::text('customer','',['class' => 'form-control']) }}
+							<select id="customer" class="form-control">
+									<option selected="selected">Pick a Customer</option>
+									@foreach($customers as $customer)
+										<option value="{{$customer->id}}">{{$customer->customer_name}}</option>
+									@endforeach
+							</select>
     			</div>
     			<div class="col-md-12">
     				@if ($errors->has('customer'))
@@ -46,44 +57,57 @@
 
 	<div class="col-md-6">
     <div class="box box-primary">
-    	{!! Form::open(['url'=>'quotations/new']) !!}
+    	{!! Form::open(['url'=>'quotations/new', 'id'=>'itemForm']) !!}
 	    <div class="box-header with-border">
 	        <h3 class="box-title">Add Items</h3>
 	        <div class="box-tools">
-	        	<button class="btn btn-primary mbtn" type="button" onclick="addItem()">
-					Add Item	        		
+						<button id="startAdd" class="btn btn-info mbtn" type="button">
+							Start Adding	        		
 	        	</button>
-            </div>
+	        	<button id="addItem" style="display:none;" class="btn btn-primary mbtn" type="button">
+							Add Item	        		
+	        	</button>
+          </div>
 	    </div>
 	    <div class="box-body">
 	        
-	        <div class="row{{ $errors->has('exam_date') ? ' has-error' : '' }}">
-	        	<div class="col-md-6">
+	        <div class="row">
+	        	<div class="col-md-6 selectm">
+							<input type="hidden" id="quote_id" name="quote_id" value="" />
+							<input type="hidden" id="product_id" name="product_id" value="" />
 	        		{{ Form::label('item_name','Product name') }}
-	        		{{ Form::text('item_name','',['class' => 'form-control']) }}
-	        		<div class="col-md-6">
-    				@if ($errors->has('item_name'))
-		                <span class="help-block col-md-12 error-msg">
-		                    <strong>{{ $errors->first('item_name') }}</strong>
-		                </span>
-		            @endif
+	        		<select id="item_name" class="form-control">
+									<option selected="selected">Pick an item</option>
+									@foreach($products as $product)
+									<option value="{{$product->id}}">{{$product->product_name}}</option>
+									@endforeach
+							</select>
     				</div>
-    			</div>
-    			<div class="col-md-6">
-	        		{{ Form::label('item_price','Unit Price') }}
-	        		{{ Form::text('item_price','100',['class' => 'form-control', 'readonly' => 'true']) }}
-    			</div>
+					<div class="col-md-6">
+						<div class="col-md-6">
+								{{ Form::label('item_price','Unit Price') }}
+								{{ Form::text('item_price','0',['class' => 'form-control']) }}
+						</div>
+						<div class="col-md-6">
+								{{ Form::label('item_price_orig','Original Price') }}
+								{{ Form::text('item_price_orig','0',['class' => 'form-control', 'readonly' => 'true']) }}
+						</div>
+					</div>
 
     			
 	        </div>
 	        <div class="row">
-	        	<div class="col-md-6">
+	        	<div class="col-md-3">
 	        		{{ Form::label('item_qty', 'Quantity') }}
 	        		{{ Form::number('item_qty','1',['class' => 'form-control']) }}
-	        	</div>	        	
+	        	</div>
+						<div class="col-md-3">
+	        		{{ Form::label('item_qty_total', 'Available') }}
+	        		{{ Form::number('item_qty_total','',['class' => 'form-control','readonly'=>'true']) }}
+	        	</div>	 	        	
 	        	<div class="col-md-6">
 	        		{{ Form::label('item_description', 'Description') }}
-	        		{{ Form::text('item_description','',['class' => 'form-control']) }}
+	        		{{ Form::text('item_description','',['class' => 'form-control', 'placeholder'=>'Optional']) }}
 	        	</div>	
 	        </div>
 	    {!! Form::close() !!}
@@ -105,16 +129,19 @@
               
             </div>
             <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table id="items_table" class="table table-striped">
-                <tbody><tr>
-                  <th>ID</th>
-                  <th>Item name</th>
-                  <th>Description</th>
-                  <th>Qty</th>
-                  <th>Unit Price</th>
-                  <th>Subtotal</th>
-                </tr>
+            <div class="box-body table-responsive">
+              <table id="items_table" class="table table-striped table-responsive">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Item name</th>
+										<th>Description</th>
+										<th>Qty</th>
+										<th>Unit Price</th>
+										<th>Subtotal</th>
+									</tr>
+								</thead>
+                <tbody>
               </tbody>
               </table>
             </div><!-- /.box-body -->
@@ -139,14 +166,15 @@
 			<div class="box-body">
 				<div class="table-responsive">
 	            <table class="table">
-	              <tbody><tr>
+	              <tbody>
+								<!--<tr>
 	                <th style="width:50%">Subtotal:</th>
 	                <td><span id="subtotal"></span></td>
 	              </tr>
 	              <tr>
 	                <th>Shipping:</th>
 	                <td>$5.80</td>
-	              </tr>
+	              </tr>-->
 	              <tr>
 	                <th>Total:</th>
 	                <td><span id="total"></span></td>
@@ -159,38 +187,18 @@
 	</div><!-- end of col-md-6 -->
 </div><!-- End of row-->
 </div><!-- end of container -->
-<script type="text/javascript">
-var count = 1;
-var total = 0;
-var items_table = document.getElementById("items_table");
-//Function to add items to the table
-function addItem(){
-	var row = items_table.insertRow(count);
-	var price = $('#item_price').val();
-	var qty = $('#item_qty').val();
-	var subtotal = qty * price;
-
-	var id = row.insertCell(0);
-	id.innerHTML = count++;
-
-	var item_name = row.insertCell(1);
-	item_name.innerHTML = $('#item_name').val();
-
-	var item_desc = row.insertCell(2);
-	item_desc.innerHTML = $('#item_description').val();
-
-	var item_qty = row.insertCell(3);
-	item_qty.innerHTML = qty;
-
-	var item_price = row.insertCell(4);
-	item_price.innerHTML = price;
-
-	var item_subtotal = row.insertCell(5); 
-	item_subtotal.innerHTML = subtotal;
-
-	total += subtotal;
-	document.getElementById('subtotal').innerHTML = total;
-}
-
+<!-- select2 js -->
+<script src="{{URL::to('/')}}/adminlte/plugins/select2/select2.full.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/adminlte/plugins/select2/select2.min.css">
+<!-- datatabl js -->
+<script src="{{URL::to('/')}}/adminlte/plugins/datatables/dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/adminlte/plugins/datatables/datatables.min.css"></link>
+<!-- variables needed to be initialized through blade/php -->
+<script>
+var searchProductUrl = "{{URL::to('/search/products/')}}/";
+var searchInventoryUrl = "{{URL::to('/search/inventory/')}}/";
+var host = "{{URL::to('/')}}";
 </script>
+<!-- quotation js functions -->
+<script type="text/javascript" src="{{URL::to('/')}}/js/quote.js"></script>
 @endsection

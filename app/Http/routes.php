@@ -24,10 +24,14 @@ Route::get('/search/products/{id}', 'SearchController@getProduct');
 //Get inventory rows based on product id
 Route::get('/search/inventory/{id}', 'SearchController@getInventory');
 
+//Get items table based on quotation id
+Route::get('/search/quotations/{id}', 'SearchController@getItemsTable');
+
 // RESOURCE CONTROLLERS ///////////////////////////////////////////////////
 
 /*** Quotations ***/
 Route::resource('quotations', 'QuoteController');
+Route::resource('quote_items', 'QuoteItemController');
 
 /*** Customers ***/
 Route::resource('customers', 'CustomerController');

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInventoryTable extends Migration
+class CreateQuoteItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,23 +12,21 @@ class CreateInventoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('inventory', function (Blueprint $table) {
+        Schema::create('quote_items', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('quote_id')->unsigned();
             $table->integer('product_id')->unsigned();
-            $table->integer('vendor')->unsigned();
-            $table->string('vendor_product_code',255);
-            $table->string('vendor_product_name',255);
-            $table->integer('vendor_quantity');
-            $table->decimal('vendor_price', 10, 2);
-            $table->date('vendor_produce');
-            $table->date('vendor_expiry');
+            $table->integer('quantity');
+            $table->decimal('sale_price',10,2);
+            $table->string('description',255);
             $table->integer('added_by')->unsigned();
             $table->timestamps();
         });
+
         // Foreign Keys
-        Schema::table('inventory', function(Blueprint $table) {
+        Schema::table('quote_items', function(Blueprint $table) {
+           $table->foreign('quote_id')->references('id')->on('quotations');
            $table->foreign('product_id')->references('id')->on('products');
-           $table->foreign('vendor')->references('id')->on('customers');
            $table->foreign('added_by')->references('id')->on('users');
         });
     }
@@ -40,6 +38,6 @@ class CreateInventoryTable extends Migration
      */
     public function down()
     {
-        Schema::drop('inventory');
+        Schema::drop('quote_items');
     }
 }
