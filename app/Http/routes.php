@@ -27,6 +27,9 @@ Route::get('/search/inventory/{id}', 'SearchController@getInventory');
 //Get items table based on quotation id
 Route::get('/search/quotations/{id}', 'SearchController@getItemsTable');
 
+//Test purposes only
+Route::get('/test', 'SearchController@test');
+
 // RESOURCE CONTROLLERS ///////////////////////////////////////////////////
 
 /*** Quotations ***/

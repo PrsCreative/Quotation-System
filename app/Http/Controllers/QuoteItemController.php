@@ -43,6 +43,7 @@ class QuoteItemController extends Controller
             'product_id' => $request['product_id'],
             'quantity' => $request['item_qty'],
             'sale_price' => $request['item_price'],
+            'subtotal' => $request['item_price'] * $request['item_qty'],
             'description' => $request['item_description'],
             'added_by' => Auth::user()->id
         ]);

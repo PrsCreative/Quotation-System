@@ -13,4 +13,13 @@ class Quotations extends Model
         'payment_term',
         'added_by'
     ]; 
+
+    public function items(){
+        return $this->hasMany(QuoteItems::class,'quote_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customers::class);
+    }
 }

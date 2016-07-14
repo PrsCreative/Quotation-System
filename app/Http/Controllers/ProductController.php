@@ -19,13 +19,6 @@ class ProductController extends Controller
     ['text'=>'Cancel','link'=>"",'icon'=>'ban']
     ];
 
-    //products with qty query
-    private static $product_with_qty = 'SELECT *, 
-                                (    SELECT sum(vendor_quantity) 
-                                        from inventory 
-                                        WHERE product_id = products.id
-                                ) as qty from products';
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -36,8 +29,11 @@ class ProductController extends Controller
     public function index()
     {
         //Get all products form db through model.
-        //$products = Products::all();
-        $products = DB::select(DB::raw(ProductController::$product_with_qty));
+        $products = Products::with('stock')->get();
+        foreach ($products as $key => $product){
+            $vendorQuantitySum = $product->stock->sum('vendor_quantity');//get sum
+            $products[$key]->qty = $vendorQuantitySum;
+        }
         //Redirect to products page with title and all products data.
         return view('index_views/products',['title' => 'Products','products'=>$products]);
     }
@@ -124,10 +120,5 @@ class ProductController extends Controller
             //Redirect to products page.
             return $this->index();
         }       
-    } 
-
-    //returns products with quantity raw query
-    public static function getQuantityQuery(){
-        return ProductController::$product_with_qty;
     }      
 }

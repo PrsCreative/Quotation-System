@@ -18,4 +18,12 @@ class Inventory extends Model
         'vendor_expiry',
         'added_by'
     ];
+
+    public function product(){
+        return $this->belongsTo(Products::class);
+    }
+
+    public function vendor(){
+        return $this->belongsTo(Customers::class,'vendor','id');
+    }
 }

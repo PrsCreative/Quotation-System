@@ -22,10 +22,10 @@
 				@foreach($quotes as $quote)
 		        <tr>
 		            <td>{{$quote->id}}</td>
-		            <td>{{$quote->customer_name}}</td>
+		            <td>{{$quote->customer->customer_name}}</td>
 		            <td>{{$quote->expiry_date}}</td>
 		            <td>{{$quote->payment_term}}</td>
-		            <td>100/fix!</td>
+		            <td>{{$quote->subtotal}}</td>
 		            <td><a href="{{URL::to('/quotations/'.$quote->id.'/edit')}}"><i class="fa fa-fw fa-arrow-circle-right"></i></a></td>
 		        </tr>
 				@endforeach

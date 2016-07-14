@@ -33,11 +33,12 @@ class QuoteController extends Controller
     public function index()
     {
         //get all quotations with their info
-        $quotes = Quotations::select('quotations.id')->join('customers','customers.id','=','quotations.customer_id')
-                            ->addSelect('quotations.expiry_date')
-                            ->addSelect('quotations.payment_term')
-                            ->addSelect('customers.company_name')
-                            ->addSelect('customers.customer_name')->get();
+        $quotes = Quotations::with('items','customer')->get();
+
+        foreach ($quotes as $key => $quote){//calculate subtotal
+            $subtotal = $quote->items->sum('subtotal');
+            $quotes[$key]->subtotal = $subtotal;
+        }
         return view('index_views/quotes',['title' => 'Quotations','quotes'=>$quotes]);
     }
 

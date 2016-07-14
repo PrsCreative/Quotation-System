@@ -18,6 +18,7 @@ class CreateQuoteItemsTable extends Migration
             $table->integer('product_id')->unsigned();
             $table->integer('quantity');
             $table->decimal('sale_price',10,2);
+            $table->decimal('subtotal',10,2);
             $table->string('description',255);
             $table->integer('added_by')->unsigned();
             $table->timestamps();

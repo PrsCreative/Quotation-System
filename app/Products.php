@@ -18,4 +18,8 @@ class Products extends Model
             'volume',
             'added_by',
     ];
+
+    public function stock(){
+        return $this->hasMany(Inventory::class,'product_id');
+    }
 }

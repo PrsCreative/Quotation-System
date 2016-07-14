@@ -12,7 +12,16 @@ class QuoteItems extends Model
         'product_id',
         'quantity',
         'sale_price',
+        'subtotal',
         'description',
         'added_by'
     ];
+
+    public function quotes(){
+        return $this->belongsTo(Quotations::class);
+    }
+
+    public function product(){
+        return $this->belongsTo(Products::class,'product_id');
+    }
 }
