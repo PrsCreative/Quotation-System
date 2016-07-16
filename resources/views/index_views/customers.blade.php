@@ -20,7 +20,7 @@
 		            <td>More</td>
 		        </tr></thead>
 		        <tbody>
-		        
+		        <?php $j=1; ?>
 		        @foreach($customers as $customer)
 		        <tr>
 		            <td>{{$customer->id}}</td>

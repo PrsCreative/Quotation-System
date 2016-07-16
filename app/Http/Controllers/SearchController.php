@@ -15,19 +15,19 @@ class SearchController extends Controller
 	//Get a prodcut information based on product id
     public function getProduct($id){
         //get product info with quantity filterd by id
-        $products = Products::find($id)->with('stock')->get();
+        $products = Products::where('id',$id)->with('stock')->get();
         foreach ($products as $key => $product){//get qty
             $vendorQuantitySum = $product->stock->sum('vendor_quantity');//get sum
             $products[$key]->qty = $vendorQuantitySum;
         }
-    	echo json_encode($products[0]);
+        return response()->json($products[0]);
     }
 
     //Get a prodcut inventory information based on product id
     public function getInventory($id){
         //get all the stocks info with vendor name
         $inventory = Inventory::where('product_id',$id)->with('vendor')->get();
-        echo json_encode($inventory);
+        return response()->json($inventory);
     }
 
     //Get items table based on quotation id
@@ -39,8 +39,7 @@ class SearchController extends Controller
         //check if id is empty
         if($id == 0 || $id == ''){
             $rows['data'] = $result;
-            echo json_encode($rows);
-            return;
+            return response()->json($rows);
         }
         //query to get query items with their product name
         $items = QuoteItems::where('quote_id',$id)->with('product')->get();
@@ -51,7 +50,7 @@ class SearchController extends Controller
         }
         $rows['data'] = $result;
         $rows['subtotal'] = $total;//return subtotal of all items
-        echo json_encode($rows);
+        return response()->json($rows);
     }
     //for test purposes only
     public function test(){

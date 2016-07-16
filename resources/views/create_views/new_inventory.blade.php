@@ -237,7 +237,7 @@ $('#product_name').change(function(){
 	$.getJSON("{{URL::to('/search/inventory/')}}/"+val, function( data ) {
 		data.forEach(function(row){
 			//Fill in vendor table on client side
-			row['vendor_name'] = row['customer']['customer_name'];
+			row['vendor_name'] = row['vendor']['customer_name'];
 			fillVendorsTable(row);
 		});
 	});
