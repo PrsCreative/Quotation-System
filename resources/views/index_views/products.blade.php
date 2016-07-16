@@ -7,6 +7,7 @@
     <div class="box box-danger">
 	    <div class="box-header with-border">
 	        <h3 class="box-title">Products</h3>
+			<button class="btn btn-success btn-addnew">Add new</button>
 	    </div>
 	    <div class="box-body">
 	    	<table id="table_quotations" class="table table-hover table-bordered table-striped dataTable">
@@ -55,7 +56,10 @@
 
 
 <script type="text/javascript">
-jQuery('#table_quotations_filter :input').addClass('borka');
+$('.btn-addnew').on( 'click', function () {
+	window.location.href = "{{URL::to('/')}}/products/create";
+});
+
 jQuery(function () {
     jQuery('#table_quotations').DataTable({
     "paging": true,

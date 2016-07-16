@@ -91,7 +91,7 @@ class ProductController extends Controller
     } 
 
     // Update customer
-    public function update(Request $request, $product_id)
+    public function update(ProductRequest $request, $product_id)
     {
         try
         {

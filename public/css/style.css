@@ -91,3 +91,10 @@ html, body{
 #vendors_table tr td:first-child,#vendors_table tr th:first-child { 
    display:none; 
 }
+.btn-addnew{
+    padding: 0px 5px;
+    margin: 0px;
+    margin-top: -5px;
+    margin-left: 5px;
+    font-size: 12px;
+}
