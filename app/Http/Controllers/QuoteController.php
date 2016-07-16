@@ -11,6 +11,7 @@ use App\Inventory;//Inventory model.
 use App\Quotations;//Quotations model.
 use App\QuoteItems;//QuoteItems model.
 use Auth;//for authentication!
+use App\Http\Requests\QuoteRequest;
 
 class QuoteController extends Controller
 {
@@ -53,7 +54,7 @@ class QuoteController extends Controller
     }    
 
     // Add quote.
-    public function store(Request $req)
+    public function store(QuoteRequest $req)
     {
         //Insert product info to db through products model.
         $quote = Quotations::Create([
@@ -63,7 +64,7 @@ class QuoteController extends Controller
             'payment_term' => $req['payment_term'],
             'added_by' => Auth::user()->id
         ]);
-        echo $quote->id;
+        return response()->json(['status'=>'success','quote_id'=>$quote->id]);
     } 
 
     // Show Edit quotation form.

@@ -48,24 +48,28 @@ $('#startAdd').on( 'click', function () {
     quoteId = $('#quote_id').val();
     //check if quote is created 
     if(quoteId > 0){//check for bad people!
-        alert('Why? Just Go do something usefull with your life!');
+        //wtf!
     }
     else{ //create quote
         if(validateQuote()){
             $.ajax({
                 type: "POST",
                 url: host+'/quotations',
-                data: $('#quoteForm').serialize()
-            }).done(function( msg ) {
-                alert( msg );
-                quoteId = msg;
-                $('#quote_id').val(msg);
-                if(msg > 0)
-                {
+                data: $('#quoteForm').serialize(),
+                dataType: 'json',
+                success: function(data){
+                    quoteId = data['quote_id'];
+                    $('#quote_id').val(data['quote_id']);
+                    console.log('success');
                     startAddFunction();
-                } 
+                },
+                error: function(data){
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                    validateQuote(errors);
+                }
             });
-        }//end if validateQuote()  
+        }//end if validateQuote()    
     }//end else
 });
 
@@ -120,19 +124,21 @@ function addItemFunction(){
 }
 
 //quote validation
-function validateQuote(){
+function validateQuote(data=[]){
     var customer_id = $('#customer_id').val();
     var expiry_date = $('#expiry_date').val();
     var payment_term = $('#payment_term').val();
     var valid = true;
     //if customer is selected
-    if(customer_id){//remove error if it had one
+    if(customer_id || !data['customer_id']){//remove error if it had one
         $('#customerm .select2-container--default .select2-selection--single').css('border-color','#d2d6de');
         $('#customerm .select2-selection__rendered').css('color','#555');
+        $('#error_customer_id').text('');
     }
     else{//Show error
         $('#customerm .select2-container--default .select2-selection--single').css('border-color','#dd4b39');
         $('#customerm .select2-selection__rendered').css('color','#dd4b39');
+        $('#error_customer_id').text(data['customer_id']);
         valid = false;
     }
 
@@ -145,20 +151,24 @@ function validateQuote(){
     var today_js = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),0,0,0,0);
 
     //if date is selected & date is greater than or equal today
-    if(expiry_date && expiry_date_js >= today_js){
+    if((expiry_date && expiry_date_js >= today_js)|| !data['expiry_date']){
         $('#expiry_date').removeClass(' danger');
+        $('#error_expiry_date').text('');
     } 
     else{ //Show error
         $('#expiry_date').addClass(' danger');
+        $('#error_expiry_date').text(data['expiry_date']);
         valid = false;
     }
 
     //if term is selected
-    if(payment_term){
+    if(payment_term || !data['payment_term']){
         $('#payment_term').removeClass(' danger');
+        $('#error_payment_term').text('');
     }
     else{//Show error
         $('#payment_term').addClass(' danger');
+        $('#error_payment_term').text(data['payment_term']);
         valid = false;
     }  
 
