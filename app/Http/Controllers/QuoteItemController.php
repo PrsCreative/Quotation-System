@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\QuoteItems;//QuoteItems model.
 use Auth;
-
+use App\Http\Requests\QuoteItemsRequest;//quote items request 
 class QuoteItemController extends Controller
 {
     /**
@@ -36,7 +36,7 @@ class QuoteItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(QuoteItemsRequest $request)
     {
         $quote_item = QuoteItems::create([
             'quote_id' => $request['quote_id'],
@@ -47,8 +47,8 @@ class QuoteItemController extends Controller
             'description' => $request['item_description'],
             'added_by' => Auth::user()->id
         ]);
-
-        echo $quote_item->id;
+        //return json response
+        return response()->json(['status'=>'success','quoteItem_id'=>$quote_item->id]);
     }
 
     /**

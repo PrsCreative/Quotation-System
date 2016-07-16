@@ -92,7 +92,13 @@
 					<option value="{{$product->id}}">{{$product->product_name}}</option>
 					@endforeach
 				</select>
+
+				<span class="help-block col-md-12 error-msg">
+						<strong id="error_item_name"></strong>
+				</span>
+				
 				</div>
+				
 				<div class="col-md-6">
 					<div class="col-md-6">
 							{{ Form::label('item_price','Unit Price') }}
@@ -102,6 +108,9 @@
 							{{ Form::label('item_price_orig','Original Price') }}
 							{{ Form::text('item_price_orig','0',['class' => 'form-control', 'readonly' => 'true']) }}
 					</div>
+					<span class="help-block col-md-12 error-msg">
+						<strong id="error_item_price"></strong>
+					</span>
 				</div>   			
 	        </div>
 	        <div class="row">
@@ -109,14 +118,17 @@
 	        		{{ Form::label('item_qty', 'Quantity') }}
 	        		{{ Form::number('item_qty','1',['class' => 'form-control']) }}
 	        	</div>
-						<div class="col-md-3">
+				<div class="col-md-3">
 	        		{{ Form::label('item_qty_total', 'Available') }}
 	        		{{ Form::number('item_qty_total','',['class' => 'form-control','readonly'=>'true']) }}
 	        	</div>	 	        	
 	        	<div class="col-md-6">
 	        		{{ Form::label('item_description', 'Description') }}
 	        		{{ Form::text('item_description','',['class' => 'form-control', 'placeholder'=>'Optional']) }}
-	        	</div>	
+	        	</div>
+				<span class="help-block col-md-12 error-msg">
+						<strong id="error_item_qty"></strong>
+				</span>	
 	        </div>
 	    {!! Form::close() !!}
 	        

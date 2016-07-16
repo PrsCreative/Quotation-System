@@ -83,23 +83,24 @@ $('#addItem').on( 'click', function () {
     //check if quote is created 
     if(quoteId > 0){
         //add item
-        var isValid = validateAddItem();
-        if(isValid){
+        if(validateAddItem()){
             var itemdata = $('#itemForm').serialize();
             $.ajax({
                 type: "POST",
                 url: host+'/quote_items',
-                data: itemdata
-            }).done(function( msg ) {
-                alert( msg );
-                
-                if(msg > 0)
-                {
-                    addItemFunction();                    
-                } 
+                data: itemdata,
+                dataType: 'json',
+                success: function(data){
+                    console.log('success');
+                    addItemFunction(); 
+                },
+                error: function(data){
+                    var errors = data.responseJSON;
+                    console.log(errors);
+                    validateAddItem(errors);
+                }
             });
         }
-        
     }
     else{ //this is just to prevent very bad people! very very bad people!
         validateQuote();
@@ -176,7 +177,7 @@ function validateQuote(data=[]){
 }
 
 //validate additem form
-function validateAddItem(){
+function validateAddItem(data=[]){
     var product_id = $('#product_id').val();
     var item_qty = $('#item_qty').val();
     var item_qty_total = $('#item_qty_total').val();
@@ -185,32 +186,38 @@ function validateAddItem(){
     var valid = true;
 
     //if product item is selected
-    if(product_id){//remove error if it had one
+    if(product_id || !data['product_id']){//remove error if it had one
         $('#itemForm .select2-container--default .select2-selection--single').css('border-color','#d2d6de');
         $('#itemForm .select2-selection__rendered').css('color','#555');
+        $('#error_item_name').text('');
     }
     else{//Show error
         $('#itemForm .select2-container--default .select2-selection--single').css('border-color','#dd4b39');
         $('#itemForm .select2-selection__rendered').css('color','#dd4b39');
+        $('#error_item_name').text(data['product_id']);
         valid = false;
     }
 
     //if qty is ok?
-    if(item_qty > item_qty_total){//if qty > total qty show error
+    if((item_qty > item_qty_total) || data['quantity']){//if qty > total qty show error
         $('#item_qty').addClass(' danger');
+        $('#error_item_qty').text(data['quantity']);
         valid = false;
     }
     else{//remove error
         $('#item_qty').removeClass(' danger');
+        $('#error_item_qty').text('');
     }
 
     //if price is ok?
-    if(item_price < item_price_orig ){//if price is less than original price
+    if((item_price < item_price_orig) || data['sale_price']){//if price is less than original price
         $('#item_price').addClass(' danger');
+        $('#error_item_price').text(data['sale_price']);
         valid = false;
     }
     else{//remove error
         $('#item_price').removeClass(' danger');
+        $('#error_item_price').text('');
     }
     return valid;
 }

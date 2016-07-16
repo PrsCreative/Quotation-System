@@ -26,10 +26,10 @@ class QuoteItemsRequest extends Request
         return [
             'quote_id' => 'required|',
             'product_id' => 'required|',
-            'quantity' => 'required|',
-            'sale_price' => 'required|',
-            'subtotal' => 'required|',
-            'description' => 'required|',
+            'item_qty' => 'required|',
+            'item_qty_total' => 'required|',
+            'item_price' => 'required|',
+            'item_price_orig' => 'required|',
         ];
     }
 }
