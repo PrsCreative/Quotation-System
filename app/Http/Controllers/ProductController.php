@@ -73,8 +73,7 @@ class ProductController extends Controller
     // Show Edit product form.
     public function edit(Request $session, $product_id)
     {
-        try
-        {
+        try{
             //Find the customer object from model.
             $product = Products::findOrFail($product_id);
             //Redirect to edit customer form with the customer info found above.
@@ -95,8 +94,7 @@ class ProductController extends Controller
     // Update customer
     public function update(ProductRequest $request, $product_id)
     {
-        try
-        {
+        try{
             //Get product object from model.
             $product = Products::findOrFail($product_id);
             //Set product object attributes
