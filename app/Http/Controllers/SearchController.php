@@ -17,7 +17,9 @@ class SearchController extends Controller
         //get product info with quantity filterd by id
         $products = Products::where('id',$id)->with('stock')->get();
         foreach ($products as $key => $product){//get qty
-            $vendorQuantitySum = $product->stock->sum('vendor_quantity');//get sum
+            $vendorQuantitySum = $product->stock->sum('vendor_quantity');//get total quantity
+            $orderSum = $product->order->sum('quantity');//get quantity of orders
+            $vendorQuantitySum -= $orderSum; //remaining quantity
             $products[$key]->qty = $vendorQuantitySum;
         }
         return response()->json($products[0]);
