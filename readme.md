@@ -1,4 +1,4 @@
-## Quotation System
+## Quotation System Open Source Laravel
 This Quotation system is build using Laravel 5.2 PHP framework and AdminLTE template.
 Tools: jQuery, DataTables js & Select2 js.
 

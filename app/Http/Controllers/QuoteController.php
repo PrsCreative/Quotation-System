@@ -11,7 +11,7 @@ use App\Inventory;//Inventory model.
 use App\Quotations;//Quotations model.
 use App\QuoteItems;//QuoteItems model.
 use Auth;//for authentication!
-use App\Http\Requests\QuoteRequest;
+use App\Http\Requests\QuoteRequest;//quote request 
 
 class QuoteController extends Controller
 {
@@ -37,8 +37,7 @@ class QuoteController extends Controller
         $quotes = Quotations::with('items','customer')->get();
 
         foreach ($quotes as $key => $quote){//calculate subtotal
-            $subtotal = $quote->items->sum('subtotal');
-            $quotes[$key]->subtotal = $subtotal;
+            $quotes[$key]->subtotal = $quote->items->sum('subtotal');
         }
         return view('index_views/quotes',['title' => 'Quotations','quotes'=>$quotes]);
     }
