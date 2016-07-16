@@ -22,4 +22,8 @@ class Products extends Model
     public function stock(){
         return $this->hasMany(Inventory::class,'product_id');
     }
+
+    public function order(){
+        return $this->hasMany(QuoteItems::class,'product_id');
+    }
 }

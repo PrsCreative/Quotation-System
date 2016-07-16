@@ -31,7 +31,9 @@ class ProductController extends Controller
         //Get all products form db through model.
         $products = Products::with('stock')->get();
         foreach ($products as $key => $product){
-            $vendorQuantitySum = $product->stock->sum('vendor_quantity');//get sum
+            $vendorQuantitySum = $product->stock->sum('vendor_quantity');//get total quantity
+            $orderSum = $product->order->sum('quantity');//get quantity of orders
+            $vendorQuantitySum -= $orderSum; //remaining quantity
             $products[$key]->qty = $vendorQuantitySum;
         }
         //Redirect to products page with title and all products data.
