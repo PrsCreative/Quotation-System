@@ -53,7 +53,8 @@
 	        		<div id="company_div">
 	        		{{ Form::label('company_name','Company name') }}
 	        		{{ Form::text('company_name',$customer->company_name,[
-	        		'class' => $errors->has('company_name') ? 'form-control danger' : 'form-control' ]) }}
+	        		'class' => $errors->has('company_name') ? 'form-control danger' : 'form-control',
+					$customer->customer_type == 'Individual'? 'readonly' :'' ]) }}
 						@if ($errors->has('company_name'))
                 			<span class="help-block col-md-12 error-msg">
                 			<strong>{{ $errors->first('company_name') }}</strong>
@@ -146,7 +147,6 @@
 </div><!-- end of container -->
 <script type="text/javascript">
 $('#customer_type').on('change',function(){
-	//alert($(this).val());
 	if($(this).val() == 'Individual'){
 		 document.getElementById('company_name').readOnly = true;
 	}
