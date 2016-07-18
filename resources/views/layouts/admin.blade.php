@@ -44,7 +44,7 @@
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; <?php echo date('Y'); ?> <a href="#">Company</a>.</strong> All rights reserved.
   </footer>
 
   <!-- control right sidebar -->
