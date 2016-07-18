@@ -88,7 +88,9 @@ html, body{
 #vendors_table tr.selected {
     background-color: floralwhite;
 }
-#vendors_table tr td:first-child,#vendors_table tr th:first-child { 
+#vendors_table tr td:first-child,#vendors_table tr th:first-child,
+#items_table tr td:first-child,#items_table tr th:first-child,
+#items_table tr td:nth-child(2),#items_table tr th:nth-child(2) { 
    display:none; 
 }
 .btn-addnew{
@@ -97,6 +99,9 @@ html, body{
     margin-top: -5px;
     margin-left: 5px;
     font-size: 12px;
+}
+table.dataTable tbody tr.selected {
+    background-color: floralwhite !important;
 }
 /*login*/
 .login-page{

@@ -1,6 +1,6 @@
 console.log('hello from quote.js');
 var quoteId = $('#quote_id').val(); //to store quotation id and determine if quote is created or no.
-$("#customer, #item_name").select2();//apply select2
+$("#customer, .selectm #item_name").select2();//apply select2
 
 disableAddItem(true);//disable add item form
 $('#customerm .select2-selection__rendered').html('Pick a Customer');
@@ -16,7 +16,7 @@ var items_table = document.getElementById("items_table");//items_table selector.
 var items_table_tbody = document.getElementById("items_table").getElementsByTagName('tbody')[0];//items table body.
 var selectedRow = ''; //store the selected row
 
-$('#items_table').DataTable();
+var table = $('#items_table').DataTable();
 
 //setup token in header
 $.ajaxSetup({
@@ -109,6 +109,11 @@ $('#addItem').on( 'click', function () {
 });
 
 function addItemFunction(){
+    refreshItemTable();    
+    emptyAddItems();
+}
+
+function refreshItemTable(){
     var url = host + '/search/quotations/' + quoteId;
     $.getJSON(url, function( data ) {
         $('#total').html(data['subtotal'] + ' AED');
@@ -121,7 +126,6 @@ function addItemFunction(){
         $('#items_table').DataTable().draw();//redraw the table
 
     });
-    emptyAddItems();
 }
 
 //quote validation
@@ -177,7 +181,7 @@ function validateQuote(data=[]){
 }
 
 //validate additem form
-function validateAddItem(data=[]){
+function validateAddItem(data=[],idm=''){
     var product_id = $('#product_id').val();
     var item_qty = $('#item_qty').val();
     var item_qty_total = $('#item_qty_total').val();
@@ -187,37 +191,37 @@ function validateAddItem(data=[]){
 
     //if product item is selected
     if(product_id || !data['product_id']){//remove error if it had one
-        $('#itemForm .select2-container--default .select2-selection--single').css('border-color','#d2d6de');
-        $('#itemForm .select2-selection__rendered').css('color','#555');
-        $('#error_item_name').text('');
+        $(idm+'#itemForm .select2-container--default .select2-selection--single').css('border-color','#d2d6de');
+        $(idm+'#itemForm .select2-selection__rendered').css('color','#555');
+        $(idm+'#error_item_name').text('');
     }
     else{//Show error
-        $('#itemForm .select2-container--default .select2-selection--single').css('border-color','#dd4b39');
-        $('#itemForm .select2-selection__rendered').css('color','#dd4b39');
-        $('#error_item_name').text(data['product_id']);
+        $(idm+'#itemForm .select2-container--default .select2-selection--single').css('border-color','#dd4b39');
+        $(idm+'#itemForm .select2-selection__rendered').css('color','#dd4b39');
+        $(idm+'#error_item_name').text(data['product_id']);
         valid = false;
     }
 
     //if qty is ok?
-    if((item_qty > item_qty_total) || data['quantity']){//if qty > total qty show error
-        $('#item_qty').addClass(' danger');
-        $('#error_item_qty').text(data['quantity']);
+    if((item_qty > item_qty_total) || data['item_qty']){//if qty > total qty show error
+        $(idm+'#item_qty').addClass(' danger');
+        $(idm+'#error_item_qty').text(data['item_qty']);
         valid = false;
     }
     else{//remove error
-        $('#item_qty').removeClass(' danger');
-        $('#error_item_qty').text('');
+        $(idm+'#item_qty').removeClass(' danger');
+        $(idm+'#error_item_qty').text('');
     }
 
     //if price is ok?
-    if((item_price < item_price_orig) || data['sale_price']){//if price is less than original price
-        $('#item_price').addClass(' danger');
-        $('#error_item_price').text(data['sale_price']);
+    if((item_price < item_price_orig) || data['item_price']){//if price is less than original price
+        $(idm+'#item_price').addClass(' danger');
+        $(idm+'#error_item_price').text(data['item_price']);
         valid = false;
     }
     else{//remove error
-        $('#item_price').removeClass(' danger');
-        $('#error_item_price').text('');
+        $(idm+'#item_price').removeClass(' danger');
+        $(idm+'#error_item_price').text('');
     }
     return valid;
 }
@@ -283,14 +287,80 @@ function emptyAddItems(){
 }
 
 //To determine which row is clicked
-$('#items_table tbody').on( 'click', 'button', function () {
-        if ( $(this).parent().parent().hasClass('selected') ) {
-            $(this).parent().parent().removeClass('selected');
-        }
-        else {
+$('#items_table tbody').on( 'click', '#delete-row-button', function () {
+        if ( !$(this).parent().parent().hasClass('selected') ) {
             table.$('tr.selected').removeClass('selected');
             $(this).parent().parent().addClass('selected');
-            //$(this).parent().parent().remove();
             selectedRow = $(this).parent().parent();
+            //console.log($(".selected td:nth-child(1)").text());
         }        
+});
+
+//delete row submit button function 
+$('#row-delete-button').on( 'click', function () {
+    var id = $(".selected td:nth-child(1)").text();
+    selectedRow.remove();
+    $('#delete-row-modal').modal('hide');
+    //console.log(host+'===='+id);
+    //Submit form using ajax
+	$.ajax({
+        type: "POST",
+        url: host+'/quote_items/'+id,
+        data: {_method:'DELETE'}
+    }).done(function( msg ) {
+        console.log( msg );
+    });
+});
+
+//To determine which row is clicked
+$('#items_table tbody').on( 'click', '#edit-row-button', function () {
+    if ( !$(this).parent().parent().hasClass('selected') ) {
+        table.$('tr.selected').removeClass('selected');
+        $(this).parent().parent().addClass('selected');
+        selectedRow = $(this).parent().parent();
+    }
+    //set modal form inputs     
+    var id = $(".selected td:nth-child(1)").text();
+    var product_id = $(".selected td:nth-child(2)").text();
+    var item_name = $(".selected td:nth-child(4)").text();
+    var description = $(".selected td:nth-child(5)").text();
+    var qty = $(".selected td:nth-child(6)").text();
+    var unit_price = $(".selected td:nth-child(7)").text();
+    $('#editModal #item_name').val(item_name);
+    $('#editModal #item_price').val(unit_price);
+    $('#editModal #item_qty').val(qty);
+    $('#editModal #item_description').val(description);
+    $('#editModal #quote_item_id').val(id);
+    $('#editModal #product_id').val(product_id);
+    //Get product information and fill in the boxes
+	$.getJSON(searchProductUrl+product_id, function( data ) {
+        $('#editModal #item_price_orig').val(data['sale_price']);//set item price
+        $('#editModal #item_qty_total').val(data['qty']);//set item quantity
+	});
+
+    $('#edit-row-modal').modal();//show modal
+});
+
+//edit row submit button
+$('#row-edit-button').on( 'click', function () {
+    var id = $("#editModal #quote_item_id").val();//get quote_item_id
+    //console.log(host+'===='+id);
+    //Submit form using ajax
+	$.ajax({
+        type: "POST",
+        url: host+'/quote_items/'+id,
+        data: $('#editModal #itemForm').serialize(),
+        dataType: 'json',
+        success: function(data){
+            console.log('success');
+            $('#edit-row-modal').modal('hide');
+            refreshItemTable();
+        },
+        error: function(data){
+            var errors = data.responseJSON;
+            console.log(errors);
+            validateAddItem(errors,'#editModal ');
+        }
+    });
+    
 });

@@ -45,10 +45,13 @@ class SearchController extends Controller
         }
         //query to get query items with their product name
         $items = QuoteItems::where('quote_id',$id)->with('product')->get();
-        
+        $count = 1;
         foreach ($items as $key => $value) {
             $total +=  $value->subtotal;
-            $result[] = [$value->id, $value->product->product_name, $value->description, $value->quantity, $value->sale_price, $value->subtotal];
+            $edit_btn = '<button id="edit-row-button" class="btn small-btn btn-success"><i class="fa fa-pencil"></i></button>';
+            $del_btn = '<button id="delete-row-button" class="btn small-btn btn-danger" data-toggle="modal" data-target="#delete-row-modal"><i class="fa fa-ban"></i></button>';
+
+            $result[] = [$value->id, $value->product->id, $count++, $value->product->product_name, $value->description, $value->quantity, $value->sale_price, $value->subtotal, $edit_btn, $del_btn];
         }
         $rows['data'] = $result;
         $rows['subtotal'] = $total;//return subtotal of all items
@@ -56,15 +59,6 @@ class SearchController extends Controller
     }
     //for test purposes only
     public function test(){
-        $quotes = Quotations::with('items','customer')->get();
-
-        foreach ($quotes as $key => $quote){
-            $subtotal = $quote->items->sum('subtotal');
-            $quotes[$key]->subtotal = $subtotal;
-            //echo '<pre>';
-            //echo $quote;
-            echo 'id = '.$quote->id.', '.$quote->customer->customer_name.', '.$quotes[$key]->subtotal . '<br>';
-        }
-
+        return response()->json(new Quotations);
     }
 }

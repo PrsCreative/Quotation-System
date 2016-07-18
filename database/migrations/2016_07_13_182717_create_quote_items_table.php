@@ -21,6 +21,7 @@ class CreateQuoteItemsTable extends Migration
             $table->decimal('subtotal',10,2);
             $table->string('description',255);
             $table->integer('added_by')->unsigned();
+            $table->integer('updated_by')->unsigned();
             $table->timestamps();
         });
 
@@ -29,6 +30,7 @@ class CreateQuoteItemsTable extends Migration
            $table->foreign('quote_id')->references('id')->on('quotations');
            $table->foreign('product_id')->references('id')->on('products');
            $table->foreign('added_by')->references('id')->on('users');
+           $table->foreign('updated_by')->references('id')->on('users');
         });
     }
 

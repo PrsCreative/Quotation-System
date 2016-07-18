@@ -153,12 +153,16 @@
               <table id="items_table" class="table table-striped table-responsive">
 					<thead>
 						<tr>
+							<th>quote_id</th>
+							<th>product_id</th>
 							<th>ID</th>
 							<th>Item name</th>
 							<th>Description</th>
 							<th>Qty</th>
 							<th>Unit Price</th>
 							<th>Subtotal</th>
+							<th></th>
+							<th></th>
 						</tr>
 					</thead>
                 <tbody>
@@ -207,6 +211,86 @@
 	</div><!-- end of col-md-6 -->
 </div><!-- End of row-->
 </div><!-- end of container -->
+<!-- Delete vendor table row -->
+<div id="delete-row-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Delete row?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button id="row-delete-button" type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="edit-row-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Update row</h4>
+      </div>
+	  <div id="editModal" class="modal-body">	
+		{!! Form::open(['url'=>'quotations/new', 'id'=>'itemForm']) !!}
+
+		<input type="hidden" name="_method" value="PUT">
+
+		<div class="row">
+			<div class="col-md-6">
+				<input type="hidden" id="quote_item_id" name="quote_id" value="" />
+				<input type="hidden" id="product_id" name="product_id" value="" />
+				{{ Form::label('item_name','Product name') }}
+				{{ Form::text('item_name','',['class' => 'form-control', 'readonly']) }}
+				
+			</div>
+			
+			<div class="col-md-6">
+				<div class="col-md-6">
+						{{ Form::label('item_price','Unit Price') }}
+						{{ Form::text('item_price','0',['class' => 'form-control']) }}
+				</div>
+				<div class="col-md-6">
+						{{ Form::label('item_price_orig','Original Price') }}
+						{{ Form::text('item_price_orig','0',['class' => 'form-control', 'readonly' => 'true']) }}
+				</div>
+				<span class="help-block col-md-12 error-msg">
+					<strong id="error_item_price"></strong>
+				</span>
+			</div>   			
+		</div><!-- end row -->
+		<div class="row">
+			<div class="col-md-3">
+				{{ Form::label('item_qty', 'Quantity') }}
+				{{ Form::number('item_qty','1',['class' => 'form-control']) }}
+			</div>
+			<div class="col-md-3">
+				{{ Form::label('item_qty_total', 'Available') }}
+				{{ Form::number('item_qty_total','',['class' => 'form-control','readonly'=>'true']) }}
+			</div>	 	        	
+			<div class="col-md-6">
+				{{ Form::label('item_description', 'Description') }}
+				{{ Form::text('item_description','',['class' => 'form-control', 'placeholder'=>'Optional']) }}
+			</div>
+			<span class="help-block col-md-12 error-msg">
+					<strong id="error_item_qty"></strong>
+			</span>	
+		</div>
+	{!! Form::close() !!}
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="row-edit-button" type="button" class="btn btn-danger">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- select2 js -->
 <script src="{{URL::to('/')}}/adminlte/plugins/select2/select2.full.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{URL::to('/')}}/adminlte/plugins/select2/select2.min.css">

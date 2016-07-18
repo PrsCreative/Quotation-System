@@ -19,15 +19,14 @@ class QuoteController extends Controller
     // Text = anchor text, Link = really?, Icon = fa icon name.
     private static $Links = [
     ['text'=>'Save Quote','link'=>"",'icon'=>'check'],
-    ['text'=>'Email','link'=>"",'icon'=>'envelope'],
     ['text'=>'Print','link'=>"",'icon'=>'print'],
-    ['text'=>'Cancel','link'=>"",'icon'=>'ban']
+    ['text'=>'Delete','link'=>"",'icon'=>'ban']
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
-        QuoteController::$Links[0]['link'] = QuoteController::$Links[3]['link'] = url('quotations');
+        QuoteController::$Links[0]['link'] = url('quotations');
     }
 
     // Show all quatations

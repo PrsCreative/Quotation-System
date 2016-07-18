@@ -80,9 +80,26 @@ class QuoteItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(QuoteItemsRequest $request, $quoteItem_id)
     {
-        //
+        try{
+            //Get quote item object from model.
+            $item = QuoteItems::findOrFail($quoteItem_id);
+            //Set qutoe item object attributes
+            $item->quantity = $request['item_qty'];
+            $item->sale_price = $request['item_price'];
+            $item->subtotal = $request['item_price'] * $request['item_qty'];
+            $item->description = $request['item_description'];
+            $item->updated_by = Auth::user()->id;
+            //Save/update item.
+            $item->save();
+            //Show success message.
+            return response()->json(['status'=>'success']);
+        }
+        catch(ModelNotFoundException $err){
+            //Show error message
+            
+        }    
     }
 
     /**
@@ -93,6 +110,14 @@ class QuoteItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try
+        {
+            //Find the inventory object from model.
+            QuoteItems::destroy($id);
+            return response()->json('deleted');
+        }
+        catch(ModelNotFoundException $err){
+            //Show error message
+        }  
     }
 }
