@@ -18,6 +18,8 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <!-- Optionally, you can add icons to the links -->
+      <li class="header">General</li>
+      <li><a href="{{URL::to('/settings')}}"><i class="fa fa-link"></i> <span>Settings</span></a></li>
       <li class="header">Quotations</li>
       <li><a href="{{URL::to('/quotations')}}"><i class="fa fa-link"></i> <span>VIEW ALL QUOTATIONS</span></a></li>
       <li><a href="{{URL::to('/quotations/create')}}"><i class="fa fa-link"></i> <span>ADD NEW QUOTE</span></a></li>
@@ -28,6 +30,7 @@
       <li><a href="{{URL::to('/products')}}"><i class="fa fa-link"></i> <span>View All Products</span></a></li>
       <li><a href="{{URL::to('/products/create')}}"><i class="fa fa-link"></i> <span>Add New Product</span></a></li>
       <li><a href="{{URL::to('/inventory/create')}}"><i class="fa fa-link"></i> <span>Add To Inventory</span></a></li>
+      
     </ul>
     <!-- /.sidebar-menu -->
   </section>
