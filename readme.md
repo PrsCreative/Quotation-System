@@ -13,10 +13,13 @@ Tools: jQuery, DataTables js & Select2 js.
 - Delete Product stocks.
 - Add Quotation.
 - Edit Quotation.
+- Settings.
+- Print view of quotation and invoice.
 
 ## To be implemented:
 - Delete Quotation.
-- Settings.
-- Print view of quotation and invoice.
+- Delete Products.
+- Delete Customers.
+
 
 
