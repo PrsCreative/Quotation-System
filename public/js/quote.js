@@ -50,8 +50,9 @@ $('#item_name').change(function(){
 //when click on print button
 $('#print-btn').on( 'click', function () {
     if($('#quote_id').val()>0){
-        window.location = host+'/quotations/print/'+$('#quote_id').val();
-        console.log('clicked');
+        var url = host+'/quotations/print/'+$('#quote_id').val();
+        $('#print-btn a').attr('target', '_blank');
+        $('#print-btn a').attr('href', url);
     }
 });
 
