@@ -16,7 +16,11 @@ var items_table = document.getElementById("items_table");//items_table selector.
 var items_table_tbody = document.getElementById("items_table").getElementsByTagName('tbody')[0];//items table body.
 var selectedRow = ''; //store the selected row
 
-var table = $('#items_table').DataTable();
+var table = $('#items_table').DataTable({
+    "responsive": true,
+    "autoWidth": false,
+    "lengthChange": true
+});
 
 //setup token in header
 $.ajaxSetup({
@@ -41,6 +45,14 @@ $('#item_name').change(function(){
         $('#item_price_orig').val(data['sale_price']);//set item price
         $('#item_qty_total').val(data['qty']);//set item quantity
 	});
+});
+
+//when click on print button
+$('#print-btn').on( 'click', function () {
+    if($('#quote_id').val()>0){
+        window.location = host+'/quotations/print/'+$('#quote_id').val();
+        console.log('clicked');
+    }
 });
 
 //when click on start adding button

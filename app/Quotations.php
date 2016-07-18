@@ -20,6 +20,6 @@ class Quotations extends Model
 
     public function customer()
     {
-        return $this->belongsTo(Customers::class);
+        return $this->belongsTo(Customers::class,'customer_id');
     }
 }

@@ -125,3 +125,11 @@ table.dataTable tbody tr.selected {
 .login-page .text-center a{
     color: #dd4b39;
 }
+.mfooter{
+    position: absolute;
+    color: gray;
+    bottom: 0;
+    text-align: center;
+    width: 220px;
+    margin: 5px;
+}

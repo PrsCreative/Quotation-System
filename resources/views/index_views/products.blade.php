@@ -10,7 +10,7 @@
 			<button class="btn btn-success btn-addnew">Add new</button>
 	    </div>
 	    <div class="box-body">
-	    	<table id="table_quotations" class="table table-hover table-bordered table-striped dataTable">
+	    	<table id="table_quotations" class="table table-hover table-bordered table-striped">
 		        <thead><tr>
 		        	<td>Code</td>
 		            <td>Product</td>
@@ -68,7 +68,7 @@ jQuery(function () {
     "ordering": true,
     "info": false,
     "responsive": true,
-    "autoWidth": true
+    "autoWidth": false
     });
 });
 </script>

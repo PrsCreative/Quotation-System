@@ -17,6 +17,10 @@ Route::get('/', 'AdminController@index');
 
 Route::get('/admin', 'AdminController@index');
 
+Route::get('/settings', 'AdminController@showSettings');//show settings
+Route::post('/saveSettings', 'AdminController@saveSettings');//save settings
+Route::get('/quotations/print/{id}', 'AdminController@showPrint');//show print version of a quotation
+
 /*** AJAX Requests ***/
 //Get products info base on product id
 Route::get('/search/products/{id}', 'SearchController@getProduct');
@@ -29,6 +33,9 @@ Route::get('/search/quotations/{id}', 'SearchController@getItemsTable');
 
 //Test purposes only
 Route::get('/test', 'SearchController@test');
+Route::get('/print', function(){
+    return view('home');
+});
 
 // RESOURCE CONTROLLERS ///////////////////////////////////////////////////
 

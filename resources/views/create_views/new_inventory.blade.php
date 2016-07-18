@@ -196,6 +196,8 @@
     "paging": false,
     "info": false,
     "responsive": true,
+    "autoWidth": false,
+    "lengthChange": true
     });
 $('#vendors_table tbody').on( 'click', 'button', function () {
         if ( $(this).parent().parent().hasClass('selected') ) {

@@ -65,7 +65,7 @@ jQuery(function () {
     "ordering": true,
     "info": false,
     "responsive": true,
-    "autoWidth": true
+    "autoWidth": false
     });
 });
 </script>

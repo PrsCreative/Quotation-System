@@ -32,4 +32,7 @@
     <!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->
+  <div class="mfooter">
+    <?php echo date('Y'); ?> &copy; <a href="http://themohammeda.github.io/" target="_blank">theMohammedA</a>
+  </div>
 </aside>

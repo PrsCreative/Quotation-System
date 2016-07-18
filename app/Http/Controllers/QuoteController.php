@@ -18,9 +18,9 @@ class QuoteController extends Controller
     // Navbar links for add new quote.
     // Text = anchor text, Link = really?, Icon = fa icon name.
     private static $Links = [
-    ['text'=>'Save Quote','link'=>"",'icon'=>'check'],
-    ['text'=>'Print','link'=>"",'icon'=>'print'],
-    ['text'=>'Delete','link'=>"",'icon'=>'ban']
+    ['text'=>'Save Quote','link'=>"",'icon'=>'check', 'id'=>''],
+    ['text'=>'Print','link'=>"#",'icon'=>'print', 'id'=>'print-btn'],
+    ['text'=>'Delete','link'=>"",'icon'=>'ban', 'id'=>'']
     ];
 
     public function __construct()
@@ -45,7 +45,7 @@ class QuoteController extends Controller
     public function create()
     {
         $customers = Customers::where('customer_vendor','customer')->get();
-        $products = Products::all();//need to get only items that has stocks.
+        $products = Products::all();//need to get only items that has stocks. 
         return view('create_views/new_quote',['title' => 'New Quotation', 
                     'nav_links'=>QuoteController::$Links,
                     'customers'=>$customers, 'products'=>$products, 'quote'=> new Quotations]);
