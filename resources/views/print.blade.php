@@ -113,8 +113,7 @@
       <div class="col-xs-6">
         <p class="lead">Terms & Conditions:</p>
         <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-          Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr
-          jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+          {{$settings->terms}}
         </p>
       </div>
       <!-- /.col -->
