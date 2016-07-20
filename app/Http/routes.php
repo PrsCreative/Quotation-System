@@ -33,6 +33,7 @@ Route::get('/search/quotations/{id}', 'SearchController@getItemsTable');
 
 //Test purposes only
 Route::get('/test', 'SearchController@test');
+
 Route::get('/print', function(){
     return view('home');
 });

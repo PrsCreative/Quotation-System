@@ -10,6 +10,7 @@ use App\Inventory; //import inventory model
 use App\Quotations; //import Quotations model
 use App\QuoteItems; //import inventory model
 use DB;
+use Illuminate\Cookie\CookieJar;
 class SearchController extends Controller
 {
 	//Get a prodcut information based on product id
@@ -58,7 +59,12 @@ class SearchController extends Controller
         return response()->json($rows);
     }
     //for test purposes only
-    public function test(){
-        return response()->json(new Quotations);
+    public function test(CookieJar $cookieJar, Request $request){
+        $cookie= $request->cookie('id');
+        if($cookie=='id') {
+            print('ID detected.');
+        } else {
+            $cookieJar->queue(cookie('id', 'id', 15));
+        }
     }
 }

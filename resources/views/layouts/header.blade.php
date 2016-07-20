@@ -18,7 +18,7 @@
     @if(isset($nav_links))
       <ul id="mnav" class="nav navbar-nav">
       @foreach($nav_links as $link)
-        <li id="{{$link['id']}}"><a href="{{$link['link']}}"><i class="fa fa-{{$link['icon']}}"></i> {{$link['text']}}</span></a></li>
+        <li id="{{isset($link['id'])? $link['id']: '' }}"><a href="{{$link['link']}}"><i class="fa fa-{{$link['icon']}}"></i> {{$link['text']}}</span></a></li>
       @endforeach
       </ul>
     @endif
